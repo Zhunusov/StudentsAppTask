@@ -1,0 +1,55 @@
+﻿<Window x:Class="StudentsAppTask.AddWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudentsAppTask"
+        mc:Ignorable="d"
+        Title="Добавление студента" Height="300" Width="300">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="0.1*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel>
+            <TextBlock Text="Заполните информацию о студенте"  />
+            <TextBlock Text="Имя" />
+            <TextBox Name="FirstNameAddTb"  Validation.Error="TextBox_Error">
+                <TextBox.Text>
+                    <Binding Path="FirstName"  NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBlock Text="Фамилия" />
+            <TextBox Name="LastAddTb"  Text="{Binding Last}" />
+            <TextBlock Text="Возраст" />
+            <TextBox Name="AgeAddTb" Validation.Error="TextBox_Error">
+                <TextBox.Text>
+                    <Binding Path="Age"  NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBlock Text="Пол" />
+            <TextBox Name="GenderAddTb" Text="{Binding Gender}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="AddStudent_Click">Добавить</Button>           
+        </StackPanel>
+    </Grid>
+</Window>
