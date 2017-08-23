@@ -3,15 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StudentsAppTask"
+        xmlns:local="clr-namespace:StudentsAppTask"        
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="18" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="14" />
+        </Style>        
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
         </Style>
         <Style TargetType="{x:Type ListBoxItem}">
             <Style.Triggers>
@@ -28,7 +29,6 @@
             <Setter Property="Margin" Value="5" />
             <Setter Property="FontSize" Value="14" />
         </Style>
-        
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -40,8 +40,8 @@
             <RowDefinition Height="0.2*" />
         </Grid.RowDefinitions>
 
-        <ListBox Grid.Column="0" ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" 
-                 BorderThickness="1" AlternationCount="2"> 
+        <ListBox Grid.Column="0" Name="studentsListBox" AlternationCount="2" SelectionMode="Extended"
+                             ItemsSource="{Binding Students}" SelectedItem="{Binding SelectedStudent}" BorderThickness="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock FontSize="18" Text="{Binding Path=FullName}" />
@@ -50,21 +50,22 @@
         </ListBox>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Name="EditBtn"  Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem}">Редактировать</Button>
             <Button Command="{Binding AddDialogCommand}">Добавить</Button>
-            <Button Command="{Binding RemoveCommand}"
-                    CommandParameter="{Binding SelectedStudent}">Удалить</Button>            
+            <Button Name="RemoveBtn" Command="{Binding RemoveCommand}"
+                    CommandParameter="{Binding SelectedItems, ElementName=studentsListBox}">Удалить</Button>            
         </StackPanel>
 
         <StackPanel Grid.Column="1" DataContext="{Binding SelectedStudent}">
             <TextBlock Text="Выбранный студент"  />
             <TextBlock Text="Имя" />
-            <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Фамилия" />
-            <TextBox Text="{Binding Last, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding Last, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Возраст" />
-            <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding Age, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Text="Пол" />
-            <TextBox Text="{Binding Gender, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="{Binding Gender, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
 

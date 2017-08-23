@@ -6,7 +6,7 @@ namespace StudentsAppTask
     public class StudentViewModel : INotifyPropertyChanged
     {
         private Student student;
-        private string fullName, gender, age;
+        private string fullName, gender, age;           
         public StudentViewModel (Student s)
         {
             student = s;
@@ -43,7 +43,7 @@ namespace StudentsAppTask
         }
         public string Age
         {
-            get { return student.Age + " лет"; }
+            get { return student.Age +" "+ AgeAdditionDetecting(student.Age); }
             set
             {
                 age = value;
@@ -71,7 +71,7 @@ namespace StudentsAppTask
 
         public string FullName
         {
-            get { return this.FirstName + " " + this.Last; }
+            get { return student.FirstName + " " + student.Last; }
             set
             {
                 fullName = value;
@@ -94,6 +94,26 @@ namespace StudentsAppTask
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+        public string AgeAdditionDetecting (int age)
+        {            
+            string result = "";
+
+            var array = age.ToString().ToCharArray();
+            switch (int.Parse(array[array.Length -1].ToString()))
+            {
+                case 0: result = "лет"; break;
+                case 1: result = "год"; break;
+                case 2: result = "года"; break;
+                case 3: result = "года"; break;
+                case 4: result = "года"; break;
+                case 5: result = "лет"; break;
+                case 6: result = "лет"; break;
+                case 7: result = "лет"; break;
+                case 8: result = "лет"; break;
+                case 9: result = "лет"; break;
+            }
+            return result;
         }
     }
 }

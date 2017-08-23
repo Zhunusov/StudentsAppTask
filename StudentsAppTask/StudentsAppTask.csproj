@@ -55,14 +55,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AddWindow.xaml.cs">
+    <Compile Include="Views\AcceptWindow.xaml.cs">
+      <DependentUpon>AcceptWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AddStudentViewModel.cs" />
+    <Compile Include="Views\AddWindow.xaml.cs">
       <DependentUpon>AddWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
-    <Compile Include="Student.cs" />
-    <Compile Include="ApplicationViewModel.cs" />
-    <Compile Include="StudentViewModel.cs" />
-    <Page Include="AddWindow.xaml">
+    <Compile Include="Infrastructure\RelayCommand.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="ViewModels\ApplicationViewModel.cs" />
+    <Compile Include="ViewModels\StudentViewModel.cs" />
+    <Page Include="Views\AcceptWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,14 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:StudentsAppTask"
         mc:Ignorable="d"
-        Title="Добавление студента" Height="300" Width="300">
+        Height="300" Width="300" Loaded="Window_Loaded">
     <Window.Resources>
         <Style TargetType="TextBlock">
             <Setter Property="FontSize" Value="16" />
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="FontSize" Value="14" />
-        </Style>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                Value="{Binding RelativeSource={RelativeSource Self},
+                    Path=(Validation.Errors)[0].ErrorContent}" />
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>        
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -23,9 +31,9 @@
         <StackPanel>
             <TextBlock Text="Заполните информацию о студенте"  />
             <TextBlock Text="Имя" />
-            <TextBox Name="FirstNameAddTb"  Validation.Error="TextBox_Error">
+            <TextBox Name="FirstNameAddTb">
                 <TextBox.Text>
-                    <Binding Path="FirstName"  NotifyOnValidationError="True">
+                    <Binding Path="FirstName">
                         <Binding.ValidationRules>
                             <DataErrorValidationRule />
                         </Binding.ValidationRules>
@@ -33,23 +41,39 @@
                 </TextBox.Text>
             </TextBox>
             <TextBlock Text="Фамилия" />
-            <TextBox Name="LastAddTb"  Text="{Binding Last}" />
-            <TextBlock Text="Возраст" />
-            <TextBox Name="AgeAddTb" Validation.Error="TextBox_Error">
+            <TextBox Name="LastAddTb">
                 <TextBox.Text>
-                    <Binding Path="Age"  NotifyOnValidationError="True">
+                    <Binding Path="Last">
                         <Binding.ValidationRules>
                             <DataErrorValidationRule />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <TextBlock Text="Пол" />
-            <TextBox Name="GenderAddTb" Text="{Binding Gender}" />
+            <TextBlock Text="Возраст" />
+            <TextBox Name="AgeAddTb">
+                <TextBox.Text>
+                    <Binding Path="Age">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBlock Text="Пол (0 - мужчина; 1 - женщина)" />
+            <TextBox Name="GenderAddTb">
+                <TextBox.Text>
+                    <Binding Path="Gender">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Click="AddStudent_Click">Добавить</Button>           
+            <Button Click="SaveStudent_Click">Сохранить</Button>           
         </StackPanel>
     </Grid>
 </Window>

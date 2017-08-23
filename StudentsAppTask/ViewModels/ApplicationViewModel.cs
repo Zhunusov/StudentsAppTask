@@ -9,12 +9,13 @@ using Microsoft.Win32;
 namespace StudentsAppTask
 {
     public class ApplicationViewModel : INotifyPropertyChanged
-    {
+    {        
         private StudentViewModel selectedStudent;
-        private AddWindow addWindow;
+        private AddWindow addWindow, editWindow;
+        private AcceptWindow acceptWindow;
 
-        public ObservableCollection<StudentViewModel> Students { get; set; }
-       
+        public ObservableCollection<StudentViewModel> Students { get; set; }       
+
         public StudentViewModel SelectedStudent
         {
             get { return selectedStudent; }
@@ -26,9 +27,8 @@ namespace StudentsAppTask
         }
         public ApplicationViewModel()
         {
-            Students = new ObservableCollection<StudentViewModel>();
-            LoadXmlFile();
-            
+            Students = new ObservableCollection<StudentViewModel>();           
+            LoadXmlFile();            
         }
 
         public void LoadXmlFile()
@@ -72,23 +72,43 @@ namespace StudentsAppTask
                   (addDialogCommand = new RelayCommand(obj =>
                   {
                       addWindow = new AddWindow();
-                      if (addWindow.ShowDialog() == true)
-                      {
-
-                      }
+                      while (addWindow.ShowDialog() == true);
+                      
                       if (addWindow.IsAddStudent)
                       {
                           Student newStudent = new Student
                           {
-                              Id = Students.Count - 1,
-                              FirstName = addWindow.Student.FirstName,
-                              Last = addWindow.Student.Last,
-                              Age = addWindow.Student.Age,
-                              Gender = addWindow.Student.Gender
+                              Id = Students.Count,
+                              FirstName = addWindow.StudentViewModel.FirstName,
+                              Last = addWindow.StudentViewModel.Last,
+                              Age = addWindow.StudentViewModel.Age,
+                              Gender = addWindow.StudentViewModel.Gender
                           };
                           Students.Add(new StudentViewModel(newStudent));
                       }
                   }));
+            }
+        }
+        private RelayCommand editCommand;
+        public RelayCommand EditCommand
+        {
+            get
+            {
+                return editCommand ??
+                  (editCommand = new RelayCommand(obj =>
+                  {                      
+                      editWindow = new AddWindow(selectedStudent.Student);
+                      while (editWindow.ShowDialog() == true) ;
+                                            
+                      if (editWindow.IsAddStudent)
+                      {
+                          selectedStudent.Student.FirstName = editWindow.StudentViewModel.FirstName;
+                          selectedStudent.Student.Last = editWindow.StudentViewModel.Last;
+                          selectedStudent.Student.Age = editWindow.StudentViewModel.Age;
+                          selectedStudent.Student.Gender = editWindow.StudentViewModel.Gender;
+                      }
+                  },
+                  (obj) => Students.Count > 0));
             }
         }
 
@@ -100,12 +120,17 @@ namespace StudentsAppTask
                 return removeCommand ??
                   (removeCommand = new RelayCommand(obj =>
                   {
-                      StudentViewModel model = obj as StudentViewModel;
-                      Student student = model.Student;
-                      if (student != null)
-                      {
-                          Students.RemoveAt(student.Id);
-                      }
+                      var students = obj as Collection<object>;
+                      List<StudentViewModel> deletingStudents = students.Cast<StudentViewModel>().ToList();
+                      acceptWindow = new AcceptWindow(deletingStudents);
+                      while (acceptWindow.ShowDialog() == true) ;
+                      if (acceptWindow.IsDelete)
+                      {                          
+                          if (deletingStudents.Count>0)
+                          {
+                              deletingStudents.ForEach(student=> Students.Remove(student));
+                          }
+                      } 
                   },
                  (obj) => Students.Count > 0));
             }
@@ -117,7 +142,7 @@ namespace StudentsAppTask
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
+        }        
     }
 }
 
